@@ -8,6 +8,16 @@ Categories: `recon` · `passive` · `semi-offensive` · `intel` · `analysis`.
 Mode gating: *semi-offensive* modules run only when a scan's mode is set to
 **Semi-offensive**.
 
+### Module Dependencies
+
+Some modules feed data into others through the engine's shared state:
+
+- `dns_records` → provides resolved IPs used by `reverse_ip`, `ip_geolocation`, `asn_lookup`, `port_scan`, `jarm_fingerprint`
+- `subdomain_scan` / `subdomain_permutation` / `dns_bruteforce` → discovered subdomains enrich `subdomain_takeover`
+- `tls` → certificate data feeds `ssl_chain` and `cert_transparency`
+
+The engine's dependency DAG ensures modules run in the correct order automatically.
+
 ## DNS & domain
 
 | Module | Description | Key |
@@ -77,7 +87,7 @@ Mode gating: *semi-offensive* modules run only when a scan's mode is set to
 | `ip_geolocation` | Resolves IPs and enriches via ip-api.com (free, no key) | — |
 | `asn_lookup` | ASN/BGP/owner via **Team Cymru DNS** (no API) | — |
 | `google_dorking` | Generates dork queries + probes link-aggregator/social services | — |
-| `urlscan` | URLScan.io public search (historical scans, IPs, servers) | — |
+| `urlscan` | URLScan.io public search (historical scans, IPs, servers) | `URLSCAN_API_KEY` _(optional)_ |
 | `favicon_pivot` | Favicon MurmurHash3 + Shodan pivot to find related hosts | `SHODAN_API_KEY` |
 | `virustotal` | Domain reputation (malicious/suspicious engine counts) | `VT_API_KEY` |
 | `shodan` | Host exposure: open ports, banners, known vulns | `SHODAN_API_KEY` |

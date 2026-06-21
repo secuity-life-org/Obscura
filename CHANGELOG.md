@@ -5,6 +5,10 @@ All notable changes to Obscura Scan are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+_No unreleased changes yet._
+
 ## [9.0.0] — 2026-06-17
 
 The first public release of **Obscura Scan** — a complete, ground-up **Go rewrite**
@@ -76,4 +80,4 @@ static binary.
 - See [MIGRATION_NOTES.md](MIGRATION_NOTES.md) for per-area decisions and deviations
   from the Python original.
 
-[9.0.0]: https://github.com/secuity-life-org/Obscura/releases/tag/v9.0.0
+[9.0.0]: https://github.com/security-life-org/Obscura/releases/tag/v9.0.0

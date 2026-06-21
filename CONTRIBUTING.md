@@ -16,7 +16,7 @@ setup, how to add a module, and the contribution workflow.
 Requirements: **Go 1.25+**. No CGO, no system libraries.
 
 ```bash
-git clone https://github.com/secuity-life-org/Obscura.git
+git clone https://github.com/security-life-org/Obscura.git
 cd Obscura
 
 make build        # build the binary -> bin/obscura
@@ -96,16 +96,42 @@ Guidelines:
 
 Add a table-driven test where practical (use `net/http/httptest` for HTTP modules).
 
+## Developer Certificate of Origin
+
+All contributions must be signed off under the [Developer Certificate of Origin (DCO)](https://developercertificate.org/). Add a `Signed-off-by` line to your commits:
+
+```bash
+git commit -s -m "feat(modules): add new_module"
+```
+
+This certifies that you have the right to submit the code under the project's MIT license.
+
 ## Commit & PR workflow
 
 1. Fork and branch from `main`.
 2. Keep commits focused; write clear messages.
 3. Ensure `gofmt`, `go vet`, `go test -race`, and `go build` are clean.
-4. Open a PR against <https://github.com/secuity-life-org/Obscura>; describe the change
+4. Open a PR against <https://github.com/security-life-org/Obscura>; describe the change
    and include sample output for new modules.
 5. For security-sensitive changes, see [SECURITY.md](SECURITY.md).
 
+### Review Process
+
+- All PRs require at least one maintainer approval before merge.
+- Maintainers aim to review PRs within 5 business days.
+- CI must pass (lint, vet, tests) before merge is enabled.
+- Force-pushes to PR branches are fine during review; squash-merge is used on merge.
+
+### Branch Naming
+
+Use the pattern `<type>/<short-description>`:
+
+- `feat/new-module-name`
+- `fix/ssrf-bypass-edge-case`
+- `docs/update-api-reference`
+- `chore/update-dependencies`
+
 ## Reporting bugs / requesting features
 
-Open an issue: <https://github.com/secuity-life-org/Obscura/issues>. Include the
+Open an issue: <https://github.com/security-life-org/Obscura/issues>. Include the
 version (`obscura --version`), steps to reproduce, and (sanitized) output.

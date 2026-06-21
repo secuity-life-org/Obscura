@@ -77,16 +77,19 @@ Feed findings straight into your security stack.
 Run a scan in your pipeline and gate on risk.
 
 ```bash
-# pseudo-pipeline step
-SCAN=$(curl -s -b cookies -X POST $OBX/scan --data-urlencode csrf_token=$T \
-       --data-urlencode target=$DEPLOY_HOST --data-urlencode modules=sec_headers \
-       --data-urlencode modules=tls_ciphers --data-urlencode modules=http_probe)
-# ... poll /api/v1/tasks/{id}, fetch /export/json/{scan_id}, fail the build if
-#     _summary.risk_score exceeds your threshold.
+# Mint an API key (one-time setup)
+./bin/obscura --mint-role admin
+
+# Use the key in CI
+curl -s -X POST http://localhost:8080/api/v1/scan \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{"target": "staging.example.com", "profile": "quick"}'
 ```
 
 ## 8. Fully offline / air-gapped recon
 
-Because 36 modules need no external services and everything is embedded in one
 static binary, Obscura Scan runs in restricted environments where only DNS and
 direct target access are available — drop one file on a host and go.
+
+> **Note:** "Keyless" means no API key is required, but some keyless modules still need outbound internet access (e.g., `subdomain_scan` queries crt.sh, `wayback_urls` queries the Wayback Machine). Modules that work fully offline: `dns_records`, `dns_zone_transfer`, `tls`, `tls_ciphers`, `ssl_chain`, `sec_headers`, `http_methods`, `cors`, `cookie_audit`, `robots_txt`, `tech`, `waf_detect`, `jarm_fingerprint`.

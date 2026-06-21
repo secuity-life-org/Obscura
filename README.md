@@ -20,6 +20,18 @@
 
 ---
 
+## Table of Contents
+
+- [What is Obscura Scan?](#what-is-obscura-scan)
+- [Highlights](#highlights)
+- [Quick Start](#quick-start)
+- [Screenshots](#screenshots)
+- [Documentation](#documentation)
+- [Architecture](#architecture)
+- [Safety & Responsible Use](#safety--responsible-use)
+- [License](#license)
+- [Links](#links)
+
 ## What is Obscura Scan?
 
 Obscura Scan is an **attack-surface management and OSINT/recon platform** that you run as **one static binary** — no Python, no virtualenv, no system libraries, no database server. Point it at a domain, URL, or IP and it runs dozens of recon modules concurrently, correlates the results, scores the risk, optionally enriches with an LLM, and serves everything through a clean web UI + REST API with live progress streaming.
@@ -51,7 +63,7 @@ It is the Go rewrite of the platform formerly known internally as *AEGIS*, re-ar
 
 ```bash
 # 1. Get it (see Installation for binaries / Docker)
-git clone https://github.com/secuity-life-org/Obscura.git
+git clone https://github.com/security-life-org/Obscura.git
 cd Obscura
 make build            # -> bin/obscura  (CGO_ENABLED=0, pure Go)
 
@@ -76,6 +88,9 @@ Then enter a target (e.g. `example.com`), pick a profile, and hit **Start Scan**
 <p align="center">
   <img src="assets/screenshot%20CLI%20Obscura/Screenshot_20260621_134855.png" alt="CLI Startup — ASCII banner, configuration loaded, server listening" width="100%">
 </p>
+
+<details>
+<summary>🖼️ View all screenshots (Dashboard, Scan Progress, Scheduled, Campaigns, Modules, Settings, Health API)</summary>
 
 ### Dashboard — New Scan
 
@@ -122,6 +137,8 @@ Then enter a target (e.g. `example.com`), pick a profile, and hit **Start Scan**
   <img src="assets/screenshot%20CLI%20Obscura/Screenshot_20260621_135347.png" alt="Health endpoint — /healthz JSON response showing status, version, and module count" width="100%">
 </p>
 
+</details>
+
 ## Documentation
 
 | Doc | What's inside |
@@ -129,6 +146,7 @@ Then enter a target (e.g. `example.com`), pick a profile, and hit **Start Scan**
 | [Installation](docs/INSTALLATION.md) | Binaries, build from source, Docker, cross-compile |
 | [Usage](docs/USAGE.md) | CLI flags, web UI walkthrough, scanning, scheduling, monitoring, campaigns, exports, AI |
 | [Configuration](docs/CONFIGURATION.md) | Full environment-variable reference, aliases, precedence, masking |
+| [.env.example](.env.example) | All environment variables with descriptions and defaults |
 | [Modules](docs/MODULES.md) | Catalog of all 43 modules by category, with key requirements |
 | [Use Cases](docs/USE_CASES.md) | Bug bounty, ASM monitoring, compliance, threat hunting, brand protection |
 | [REST API](docs/API.md) | Endpoints, Bearer auth, minting keys, examples |
@@ -137,6 +155,22 @@ Then enter a target (e.g. `example.com`), pick a profile, and hit **Start Scan**
 | [Changelog](CHANGELOG.md) | Release history |
 
 ## Architecture
+
+```mermaid
+flowchart LR
+    A["cmd/obscura\nEntrypoint"] --> B["internal/config\nEnv Loader"]
+    B --> C["internal/store\nSQLite WAL"]
+    B --> D["internal/engine\nWorker Pool + DAG"]
+    D --> E["internal/modules\n43 Modules"]
+    D --> F["internal/safety\nSSRF Guard"]
+    E --> G["internal/ml\nRisk Scoring"]
+    E --> H["internal/ai\nAI Copilot"]
+    D --> I["internal/server\nchi Router + SSE"]
+    I --> J["internal/export\nPDF/DOCX/STIX/SIEM"]
+    I --> K["internal/notify\nSlack/Discord/Teams"]
+    I --> L["internal/schedule\nContinuous Monitoring"]
+    I --> M["internal/metrics\nPrometheus"]
+```
 
 ```
 cmd/obscura            entrypoint: config → DB → engine → server → graceful shutdown
@@ -169,6 +203,6 @@ Released under the [MIT License](LICENSE). © Security-Life.org / sudo3rs.
 
 ## Links
 
-- 🐙 Repository: <https://github.com/secuity-life-org/Obscura>
-- 🐛 Issues: <https://github.com/secuity-life-org/Obscura/issues>
+- 🐙 Repository: <https://github.com/security-life-org/Obscura>
+- 🐛 Issues: <https://github.com/security-life-org/Obscura/issues>
 - 🔒 Security: see [SECURITY.md](SECURITY.md)

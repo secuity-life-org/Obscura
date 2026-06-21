@@ -6,6 +6,10 @@ logging via configuration.
 
 Base URL: `http://<host>:<port>` (default `http://127.0.0.1:8080`).
 
+### Versioning
+
+All endpoints are under `/api/v1/`. The API follows semantic versioning — breaking changes will only be introduced in new major versions (e.g., `/api/v2/`). Deprecated endpoints will be announced at least one minor release in advance.
+
 ## Authentication
 
 The `/api/v1/*` surface is guarded by middleware that is **off by default** and
@@ -18,6 +22,13 @@ toggled per control:
 | Audit log | `AUDIT_LOG_ENABLED` | `true` |
 
 `/healthz`, `/metrics`, and the browser/export routes are **not** token-auth'd.
+
+### Role Permissions
+
+| Role | Scan | Read Results | Export | Admin (settings, keys) |
+|------|------|-------------|--------|------------------------|
+| `viewer` | ❌ | ✅ | ✅ | ❌ |
+| `admin` | ✅ | ✅ | ✅ | ✅ |
 
 ### Minting an API key
 
@@ -85,6 +96,20 @@ GET /export/elastic-ecs/{scanID}
 GET /export/pdf/{scanID}
 GET /export/docx/{scanID}
 ```
+
+### Additional Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/api/v1/tasks` | List all scan tasks (paginated) |
+| `GET` | `/api/v1/tasks/:id` | Get scan result by task ID |
+| `GET` | `/api/v1/tasks/:id/events` | SSE stream for live scan progress |
+| `GET` | `/api/v1/export/:id/:format` | Export results (json, csv, stix, splunk, qradar, ecs) |
+| `POST` | `/api/v1/ai` | Send findings to the AI copilot |
+| `GET` | `/healthz` | Health check |
+| `GET` | `/metrics` | Prometheus metrics |
+
+> **Note:** Scheduled scans, campaigns, and scan history are currently managed through the web UI. Programmatic CRUD endpoints for these resources are planned for a future release.
 
 ## Launching a scan
 

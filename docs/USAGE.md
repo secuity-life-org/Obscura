@@ -3,6 +3,24 @@
 This guide covers how to drive Obscura Scan day to day — the CLI, the web UI, and
 every major workflow.
 
+## Table of Contents
+
+- [Command-line flags](#command-line-flags)
+- [The web UI](#the-web-ui)
+  - [Run a scan](#run-a-scan)
+  - [Read the results](#read-the-results)
+  - [Attack-surface graph](#attack-surface-graph)
+  - [Compare two scans](#compare-two-scans)
+  - [Notes](#notes)
+- [Profiles (scan templates)](#profiles-scan-templates)
+- [Scheduling & continuous monitoring](#scheduling--continuous-monitoring)
+- [Campaigns (bulk scanning)](#campaigns-bulk-scanning)
+- [Exporting](#exporting)
+- [AI copilot](#ai-copilot)
+- [REST API](#rest-api)
+- [Observability](#observability)
+- [Troubleshooting](#troubleshooting)
+
 ## Command-line flags
 
 ```
@@ -133,3 +151,14 @@ log.
 - `GET /metrics` — Prometheus exposition (scan counts, module outcomes, durations,
   HTTP response classes).
 - Structured logs on stderr; `SIGINT`/`SIGTERM` drains in-flight scans before exit.
+
+## Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| `bind: address already in use` | Another process is using port 8080. Set `OBSCURA_PORT=9090` or stop the conflicting process. |
+| Scan returns no results for a valid domain | Check your network connectivity. Some modules require outbound HTTPS access. |
+| SSRF guard blocks a legitimate internal target | Use `--allow-internal` (only for authorized internal engagements). |
+| Module shows "skipped — key not configured" | The module requires an API key. See [Configuration](CONFIGURATION.md) for the relevant env var. |
+| Database locked errors | Ensure only one instance of Obscura is running against the same `obscura.db` file. |
+| AI copilot returns generic responses | Configure at least one AI provider key (Gemini, OpenAI, or Anthropic). The rule-based fallback is used when no keys are set. |

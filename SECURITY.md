@@ -14,12 +14,24 @@ you scanned), please report it responsibly:
 
 - **Do not** open a public issue for security vulnerabilities.
 - Email the maintainers or use GitHub's private security advisory at
-  <https://github.com/secuity-life-org/Obscura/security/advisories>.
+  <https://github.com/security-life-org/Obscura/security/advisories>.
+- **Email:** [security@security-life.org](mailto:security@security-life.org)
 - Include: affected version, a description, reproduction steps, and impact.
 
 We aim to acknowledge reports within a few business days and to ship a fix or
 mitigation as quickly as is practical. Please give us reasonable time to remediate
 before public disclosure.
+
+### Disclosure Timeline
+
+- **Acknowledgment:** Within 2 business days of report receipt.
+- **Triage & Assessment:** Within 7 business days.
+- **Fix & Release:** Best-effort within 30 days for critical issues, 90 days for others.
+- **Public Disclosure:** Coordinated with the reporter after the fix is released.
+
+### Acknowledgments
+
+We gratefully credit researchers who responsibly disclose vulnerabilities. With your permission, your name (or handle) will be listed in the release notes and CHANGELOG for the version containing the fix.
 
 ## Responsible & authorized use
 

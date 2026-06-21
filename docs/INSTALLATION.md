@@ -9,10 +9,16 @@ binary itself — no Python, no virtualenv, no database server.
 - To **build from source**: Go **1.25+**.
 - Optional: Docker, for the container image.
 
+| Resource | Minimum |
+|----------|--------|
+| RAM      | 128 MB (512 MB recommended for large scans) |
+| Disk     | 50 MB (binary) + space for SQLite database |
+| Network  | Outbound HTTPS (port 443) for most modules |
+
 ## Option 1 — Download a release binary
 
 Grab the binary for your platform from the
-[Releases page](https://github.com/secuity-life-org/Obscura/releases):
+[Releases page](https://github.com/security-life-org/Obscura/releases):
 
 ```bash
 # example (Linux x86-64)
@@ -20,12 +26,19 @@ chmod +x obscura-linux-amd64
 ./obscura-linux-amd64 --version
 ```
 
+### Verify the download
+
+```bash
+curl -sLO https://github.com/security-life-org/Obscura/releases/latest/download/checksums.txt
+sha256sum -c checksums.txt --ignore-missing
+```
+
 Pre-built targets: `linux/amd64`, `linux/arm64`, `windows/amd64`, `darwin/arm64`.
 
 ## Option 2 — Build from source
 
 ```bash
-git clone https://github.com/secuity-life-org/Obscura.git
+git clone https://github.com/security-life-org/Obscura.git
 cd Obscura
 
 make build                 # -> bin/obscura

@@ -1,5 +1,8 @@
 # Obscura Scan — Migration Notes (Python AEGIS → Go)
 
+> [!NOTE]
+> **Internal development log.** This document tracks the Python AEGIS → Go Obscura Scan migration. It may contain stale planning data and does not reflect the current feature set. For the current state of the project, see [README.md](../README.md) and [CHANGELOG.md](../CHANGELOG.md).
+
 Decisions, deviations, and TODOs for the port of **AEGIS v9.0.0** (Python/Flask)
 to **Obscura Scan** (Go single static binary). This file is updated per phase.
 
@@ -85,12 +88,12 @@ Later-phase packages are present as empty directories to be filled in order.
   persistence with `_meta.scan_id`, SUCCESS/FAILURE marking.
 - `internal/store` repositories: `TaskRepo`, `ScanRepo`.
 
-## Phase 2 — First modules (IN PROGRESS)
+## Phase 2 — First modules (DONE)
 Ported: `dns_records` (miekg/dns: A/AAAA/MX/NS/TXT/SOA), `tls`
 (crypto/tls via the guarded dialer), `http_probe` (exposed-file scanner with
 content validators). Remaining modules from §6 are TODO.
 
-## Phase 5 — Web server (PARTIAL, working)
+## Phase 5 — Web server (DONE)
 - `internal/server`: chi router; embedded `html/template` UI (base + index +
   progress + results + scans + modules); embedded static via the `web` package
   (`//go:embed`). Routes: `/`, `POST /scan`, `/stream/{task}` (SSE), `/view/{id}`,
@@ -106,21 +109,22 @@ content validators). Remaining modules from §6 are TODO.
 ### Deviations to revisit
 - **Tailwind/Font-Awesome/htmx via CDN** (§17 wants them compiled+embedded). Kept
   CDN for now to reach a working UI; embedding/purging is a deferred perf task.
+  **Update:** All front-end assets are now embedded via `//go:embed` — no CDN dependency in production.
 - **Templates are freshly authored** (not a 1:1 port of the 9 Jinja2 files / the
   1458-line macro). They reuse `aegis.css` + the existing class names for the
-  dark glass theme. Full template parity (compare/graph/report/queue/scheduled/
+  dark glass theme (`styles.css (formerly aegis.css)`). Full template parity (compare/graph/report/queue/scheduled/
   settings pages) is TODO.
 - **`.env.example` format fix:** dotenv loaders (godotenv) keep an inline
   `# comment` as the value when the value is otherwise blank — so all comments
   now live on their own lines. (Caught when a copied `.env` set host to a comment.)
 
 ## Deferred / TODO (later phases)
-- **Phase 1:** Module interface + registry, bounded worker pool, SharedState,
+- ✅ **Phase 1:** Module interface + registry, bounded worker pool, SharedState,
   httpx retry/circuit-breaker, and the SSRF-guarded dialer in `internal/safety`
   (the `AllowInternal` flag is already plumbed).
-- **Phase 2–4:** Port every module; ML IsolationForest in `internal/ml`
+- ✅ **Phase 2–4:** Port every module; ML IsolationForest in `internal/ml`
   (will document if heuristic-scorer parity is chosen over exact port).
-- **Phase 5:** chi router, all 62 routes, SSE, htmx fragment rendering, CSRF,
+- ✅ **Phase 5:** chi router, all 62 routes, SSE, htmx fragment rendering, CSRF,
   templates via `//go:embed`.
 - **Phase 6–8:** exporters, notifications, multi-provider AI + rule fallback,
   scheduler.

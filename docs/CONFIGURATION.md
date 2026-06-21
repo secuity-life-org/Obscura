@@ -46,15 +46,17 @@ first non-empty value wins.
 | `OBSCURA_DEBUG` | `FLASK_DEBUG` | `0` | Debug flag |
 | `OBSCURA_ALLOW_INTERNAL` | — | `false` | Permit private/loopback targets (also `--allow-internal`) |
 
+> Logging uses Go's `slog` package at INFO level by default. Set `OBSCURA_LOG_LEVEL` to `debug`, `info`, `warn`, or `error` to adjust verbosity.
+
 ## Thresholds & automation
 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `DEFAULT_TIMEOUT` | `15` | Per-request timeout (seconds) |
 | `ALERT_THRESHOLD` | `60` | Risk score at/above which a scan sends an alert |
-| `AUTO_TICKET_THRESHOLD` | `70` | Reserved |
+| `AUTO_TICKET_THRESHOLD` | `70` | Reserved for future use — not yet implemented. |
 | `MAX_CONCURRENT_SCANS` | `5` | Campaign/multi-target concurrency bound |
-| `WORKFLOW_MAX_STEPS` | `15` | Reserved |
+| `WORKFLOW_MAX_STEPS` | `15` | Reserved for future use — not yet implemented. |
 | `API_RATE_LIMIT` | `100` | REST API requests/min per IP |
 
 ## AI providers
@@ -89,6 +91,8 @@ Extended OSINT keys are also recognized: `HUNTER_API_KEY`, `CENSYS_API_ID`,
 `DEHASHED_EMAIL`/`DEHASHED_API_KEY`, `FULLHUNT_API_KEY`, `ZOOMEYE_API_KEY`,
 `BINARYEDGE_API_KEY`, `INTELX_API_KEY`, `BUILTWITH_API_KEY`, `WHOISXML_API_KEY`,
 `HIBP_API_KEY`.
+
+> **Note:** Extended OSINT keys (`HUNTER_API_KEY`, `CENSYS_API_ID`, `CENSYS_API_SECRET`, `FULLHUNT_API_KEY`, `HIBP_API_KEY`) are recognized by the configuration loader and displayed on the Settings page, but their corresponding modules are not yet implemented. They are reserved for upcoming releases.
 
 ## Notifications
 
